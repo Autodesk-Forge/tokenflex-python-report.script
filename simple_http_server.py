@@ -10,7 +10,7 @@ parser.add_argument('--FORGE_CLIENT_ID', required=True)
 parser.add_argument('--FORGE_CLIENT_SECRET', required=True)
 parser.add_argument('--FORGE_CALLBACK_URL', required=True)
 args = parser.parse_args()
-access_token_url = 'https://developer-stg.api.autodesk.com/authentication/v1/gettoken'
+access_token_url = 'https://developer.api.autodesk.com/authentication/v1/gettoken'
 
 class ForgeCallbackHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
