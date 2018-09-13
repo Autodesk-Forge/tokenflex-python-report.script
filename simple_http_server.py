@@ -21,6 +21,7 @@ class ForgeCallbackHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler)
             resp = requests.post(access_token_url, headers=headers, data=data)
             if resp.status_code == 200:
                 access_token = resp.json()['access_token']
+                self.send_response(200)
                 print access_token
 
 def startHttpServer(args, access_token_url):
