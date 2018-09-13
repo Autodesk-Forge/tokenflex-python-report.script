@@ -29,10 +29,11 @@ class ForgeCallbackHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler)
             if resp.status_code == 200:
                 access_token = resp.json()['access_token']
                 print access_token
-                
 
-PORT = 3000
-httpd = SocketServer.TCPServer(("", PORT), ForgeCallbackHTTPRequestHandler)
+def startServer(args, access_token_url):
+    PORT = 3000
+    httpd = SocketServer.TCPServer(("", PORT), ForgeCallbackHTTPRequestHandler)
+    print "serving at port", PORT
+    httpd.serve_forever()
 
-print "serving at port", PORT
-httpd.serve_forever()
+startServer(args, access_token_url)
