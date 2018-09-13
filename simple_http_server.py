@@ -5,13 +5,6 @@ import SimpleHTTPServer
 import SocketServer
 import urlparse
 
-parser = argparse.ArgumentParser(description='Run Forge authentication script.')
-parser.add_argument('--FORGE_CLIENT_ID', required=True)
-parser.add_argument('--FORGE_CLIENT_SECRET', required=True)
-parser.add_argument('--FORGE_CALLBACK_URL', required=True)
-args = parser.parse_args()
-access_token_url = 'https://developer.api.autodesk.com/authentication/v1/gettoken'
-
 class ForgeCallbackHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_GET(self):
         bits = urlparse.urlparse(self.path)
@@ -30,10 +23,17 @@ class ForgeCallbackHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler)
                 access_token = resp.json()['access_token']
                 print access_token
 
-def startServer(args, access_token_url):
+def startHttpServer(args, access_token_url):
     PORT = 3000
     httpd = SocketServer.TCPServer(("", PORT), ForgeCallbackHTTPRequestHandler)
     print "serving at port", PORT
     httpd.serve_forever()
 
-startServer(args, access_token_url)
+parser = argparse.ArgumentParser(description='Run Forge authentication script.')
+parser.add_argument('--FORGE_CLIENT_ID', required=True)
+parser.add_argument('--FORGE_CLIENT_SECRET', required=True)
+parser.add_argument('--FORGE_CALLBACK_URL', required=True)
+args = parser.parse_args()
+access_token_url = 'https://developer.api.autodesk.com/authentication/v1/gettoken'
+
+startHttpServer(args, access_token_url)
