@@ -9,7 +9,7 @@ A Forge sample
 
 See [video demonstration]()
 
-**Usage**: select **login** in the navigation drawer (left). 
+**Usage**: select 
 
 ## Architecture
 
@@ -26,12 +26,6 @@ For using this sample, you need an Autodesk developer credentials. Visit the [Fo
 - FORGE\_CLIENT\_ID
 - FORGE\_CLIENT\_SECRET
 - FORGE\_CALLBACK\_URL
-
-### Configuration files
-
-On the Koa server, edit the file ```server/src/configuration/default.json``` to update the ```vuehost``` value to your Vue webserver url. Finally, generate the new configuration file, by running the command ```npm run init```.
-
-On the Vue server, edit the file ```client/src/config.js``` to update the ```koahost``` value to your Koa webserver url.
 
 ## Running locally
 
@@ -54,25 +48,6 @@ export VARIABLE_NAME=value
 ```
 set VARIABLE_NAME=value
 ```
-
-Install the required packaged and run the application:
-
-Backend Koa.js application
-```
-cd server
-npm install
-npm run dev
-```
-Frontend Vue.js application
-```
-cd client
-npm install
-npm run serve
-```
-
-Open the browser with SSL on [http://localhost:8080](http://localhost:8080)
-
-**Important:** do not use **npm start** locally, this is intended for PRODUCTION only with HTTPS (SSL) secure cookies.
 
 ## Deployment
 
