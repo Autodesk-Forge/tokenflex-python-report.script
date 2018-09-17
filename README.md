@@ -53,7 +53,14 @@ On second tab,
 python consumption_reporting.py --FORGE_CLIENT_ID=<your Forge ID> --FORGE_CLIENT_SECRET=<your Forge secret> --FORGE_CALLBACK_URL=http://localhost:3000/forge/oauth/callback
 ```
 
-- 
+- when prompted to browse to authorization url, right-click ```open URL```
+- sign-in to Autodesk with your Autodesk ID & grant access
+- when asked if you've granted access, answer ```yes```
+- go back to first tab
+- copy the access token value from terminal
+- go back to second tab
+- when asked to input access token value, paste the value from clipboard
+- you should see contract details
 
 ## Troubleshooting
 
