@@ -29,34 +29,31 @@ For using this sample, you need an Autodesk developer credentials. Visit the [Fo
 
 ## Running locally
 
-Make sure to have [NodeJS](https://nodejs.org) installed. Clone this project or download it. It's recommended to install [GitHub desktop](https://desktop.github.com). To clone it via command line, use the following (Terminal on MacOSX/Linux, Git Shell on Windows):
+Make sure to have [Python 2.7](https://www.python.org/downloads/release/python-278/) installed. Clone this project or download it. It's recommended to install [GitHub desktop](https://desktop.github.com). To clone it via command line, use the following (Terminal on MacOSX/Linux, Git Shell on Windows):
 
 ```
-git clone https://github.com/mazerab/forge-koa-vue-passport-boilerplate
+git clone https://github.com/mazerab/forge-consumption-reporting-sample
 ```
 
-Set all FORGE_ aenvironment variables described on the **Setup** section using the following:
+Launch a terminal with two tabs:
 
-- Mac OSX/Linux (Terminal)
-
-```
-export VARIABLE_NAME=value
-```
-
-- Windows (use <b>Node.js command line</b> from Start menu)
+On first tab, 
+- change directory to the repository you just downloaded locally
+- run the command 
 
 ```
-set VARIABLE_NAME=value
+python simple_http_server.py --FORGE_CLIENT_ID=<your Forge ID> --FORGE_CLIENT_SECRET=<your Forge secret> --FORGE_CALLBACK_URL=http://localhost:3000/forge/oauth/callback
 ```
 
-## Deployment
+On second tab,
+- change directory to the same repository folder
+- run the command
 
-The first step is to download the Git repository to a local directory on your machine. 
+```
+python consumption_reporting.py --FORGE_CLIENT_ID=<your Forge ID> --FORGE_CLIENT_SECRET=<your Forge secret> --FORGE_CALLBACK_URL=http://localhost:3000/forge/oauth/callback
+```
 
-### Setup
-
-Test
-
+- 
 
 ## Troubleshooting
 
