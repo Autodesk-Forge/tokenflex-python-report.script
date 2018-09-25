@@ -4,12 +4,12 @@ import requests
 import urllib
 
 def getContracts(access_token):
+    print 'Getting Contracts ...'
     get_contract_url = base_tokenflex_api + '/v1/contract'
     headers = {'Authorization': 'Bearer ' + access_token}
     resp = requests.get(get_contract_url, headers=headers)
     resp.raise_for_status()
     if resp.status_code == 200:
-        print 'Getting Contracts ...'
         print resp.text
         return resp.json()
 
@@ -46,6 +46,7 @@ def submitExportRequest(access_token, contract_number):
     resp.raise_for_status()
     if resp.status_code == 200:
         print resp.text
+        return resp.json()
 
 parser = argparse.ArgumentParser(description='Run consumption report.')
 parser.add_argument('--FORGE_CLIENT_ID', required=True)
@@ -78,4 +79,5 @@ while accepted.lower() == 'n':
             # Step 3: Submit an Export request
             for contract in contracts:
                 contract_number = contract['contractNumber']
-                submitExportRequest(access_token, contract_number)
+                request = submitExportRequest(access_token, contract_number)
+                # Step 4: Poll for request results
