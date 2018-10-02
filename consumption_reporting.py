@@ -92,7 +92,7 @@ accepted = 'n'
 while accepted.lower() == 'n':
     accepted = raw_input('Have you authorized me? (y/n) ')
     if accepted == 'n':
-        print 'accepted: ', accepted
+        quit()
     elif accepted == 'y':
         print 'Access granted!'
         access_token = raw_input('Please enter access token value here: ')
