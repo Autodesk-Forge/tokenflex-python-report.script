@@ -63,6 +63,8 @@ python consumption_reporting.py --FORGE_CLIENT_ID=<your Forge ID> --FORGE_CLIENT
 
 ### Deployment
 
+Since we are dealing with Python scripts, there is no deployment needed, simply copy the Python script to your local machine and run the scripts from that location.
+
 ## Further Reading
 
 ### Troubleshooting
