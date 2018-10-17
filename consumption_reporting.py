@@ -3,6 +3,7 @@ import json
 import os
 import polling
 import requests
+import sys
 import urllib
 
 def downloadCsvFile(download_url, download_filename):
@@ -83,44 +84,48 @@ authorize_url = base_url + '/authentication/v1/authorize'
 client_id = os.environ['FORGE_CLIENT_ID'] if args.FORGE_CLIENT_ID is None else args.FORGE_CLIENT_ID
 callback_url = os.environ['FORGE_CALLBACK_URL'] if args.FORGE_CALLBACK_URL is None else args.FORGE_CALLBACK_URL 
 
-# Step 1: Direct the user to the authorization web flow
-# Since this is a CLI script we do not redirect. In a web application, you would
-# redirect the user to the authentication URL below.
-authorization_url = authorize_url + '?response_type=code&client_id=' + client_id + '&redirect_uri=' + urllib.quote_plus(callback_url) + '&scope=data:read'
-print "Go to the following link in your browser: "
-print authorization_url
+if client_id is not None and callback_url is not None:
+    # Step 1: Direct the user to the authorization web flow
+    # Since this is a CLI script we do not redirect. In a web application, you would
+    # redirect the user to the authentication URL below.
+    authorization_url = authorize_url + '?response_type=code&client_id=' + client_id + '&redirect_uri=' + urllib.quote_plus(callback_url) + '&scope=data:read'
+    print "Go to the following link in your browser: "
+    print authorization_url
 
-# Step 2: After the user has granted access to you, an access token has been issued
-accepted = 'n'
-while accepted.lower() == 'n':
-    accepted = raw_input('Have you authorized me? (y/n) ')
-    if accepted == 'n':
-        quit()
-    elif accepted == 'y':
-        print 'Access granted!'
-        access_token = raw_input('Please enter access token value here: ')
-        if access_token != '':
-            contracts = getContracts(access_token)
-            # Step 3: Submit an Export request
-            for contract in contracts:
-                print '*** Found contract: ' + contract['contractNumber']
-                contract_number = contract['contractNumber']
-                export_request = submitExportRequest(access_token, contract_number)
-                # Step 4: Poll for request results
-                request_key = export_request['requestKey']
-                print '*** Submitted export request: ' + request_key
-                request_details = getExportRequestsDetails(access_token, contract_number, request_key)
-                if request_details == 'Download':
-                    request_status = request_details['requestStatus']
-                    print '*** Retrieved export status: ' + request_status
-                else:
-                    poll_status = pollExportRequestDetails(access_token, contract_number, request_key)
-                    if poll_status == True:
-                        request_details = getExportRequestsDetails(access_token, contract_number, request_key)
+    # Step 2: After the user has granted access to you, an access token has been issued
+    accepted = 'n'
+    while accepted.lower() == 'n':
+        accepted = raw_input('Have you authorized me? (y/n) ')
+        if accepted == 'n':
+            sys.exit()
+        elif accepted == 'y':
+            print 'Access granted!'
+            access_token = raw_input('Please enter access token value here: ')
+            if access_token != '':
+                contracts = getContracts(access_token)
+                # Step 3: Submit an Export request
+                for contract in contracts:
+                    print '*** Found contract: ' + contract['contractNumber']
+                    contract_number = contract['contractNumber']
+                    export_request = submitExportRequest(access_token, contract_number)
+                    # Step 4: Poll for request results
+                    request_key = export_request['requestKey']
+                    print '*** Submitted export request: ' + request_key
+                    request_details = getExportRequestsDetails(access_token, contract_number, request_key)
+                    if request_details == 'Download':
                         request_status = request_details['requestStatus']
                         print '*** Retrieved export status: ' + request_status
-                        download_url = request_details['downloadUrl']
-                        print '*** Download url: ' + download_url
-                        download_filename = request_details['downloadFileName']
-                        downloadCsvFile(download_url, download_filename)
-                        print '*** Downloaded file: ' + download_filename
+                    else:
+                        poll_status = pollExportRequestDetails(access_token, contract_number, request_key)
+                        if poll_status == True:
+                            request_details = getExportRequestsDetails(access_token, contract_number, request_key)
+                            request_status = request_details['requestStatus']
+                            print '*** Retrieved export status: ' + request_status
+                            download_url = request_details['downloadUrl']
+                            print '*** Download url: ' + download_url
+                            download_filename = request_details['downloadFileName']
+                            downloadCsvFile(download_url, download_filename)
+                            print '*** Downloaded file: ' + download_filename
+else: 
+    print "Exiting script since Forge client ID and callback url were not provided."
+    sys.exit()

@@ -4,6 +4,7 @@ import os
 import requests
 import SimpleHTTPServer
 import SocketServer
+import sys
 import urlparse
 
 class ForgeCallbackHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
@@ -38,4 +39,8 @@ parser.add_argument('--FORGE_CALLBACK_URL', required=False)
 args = parser.parse_args()
 access_token_url = 'https://developer.api.autodesk.com/authentication/v1/gettoken'
 
-startHttpServer(args, access_token_url)
+if ("FORGE_CLIENT_ID" in os.environ and "FORGE_CLIENT_SECRET" in os.environ and "FORGE_CALLBACK_URL" in os.environ) or (args.FORGE_CLIENT_ID is not None and args.FORGE_CLIENT_SECRET is not None and args.FORGE_CALLBACK_URL is not None):
+    startHttpServer(args, access_token_url)
+else: 
+    print "Exiting script since no Forge client ID, secret and callback url were provided."
+    sys.exit()
