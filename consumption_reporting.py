@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import polling
 import requests
 import urllib
@@ -71,19 +72,21 @@ def submitExportRequest(access_token, contract_number):
         return resp.json()
 
 parser = argparse.ArgumentParser(description='Run consumption report.')
-parser.add_argument('--FORGE_CLIENT_ID', required=True)
-parser.add_argument('--FORGE_CLIENT_SECRET', required=True)
-parser.add_argument('--FORGE_CALLBACK_URL', required=True)
+parser.add_argument('--FORGE_CLIENT_ID', required=False)
+parser.add_argument('--FORGE_CALLBACK_URL', required=False)
 args = parser.parse_args()
 
 base_url = 'https://developer.api.autodesk.com'
 base_tokenflex_api = 'https://developer.api.autodesk.com/tokenflex'
 authorize_url = base_url + '/authentication/v1/authorize'
 
+client_id = os.environ['FORGE_CLIENT_ID'] if args.FORGE_CLIENT_ID is None else args.FORGE_CLIENT_ID
+callback_url = os.environ['FORGE_CALLBACK_URL'] if args.FORGE_CALLBACK_URL is None else args.FORGE_CALLBACK_URL 
+
 # Step 1: Direct the user to the authorization web flow
 # Since this is a CLI script we do not redirect. In a web application, you would
 # redirect the user to the authentication URL below.
-authorization_url = authorize_url + '?response_type=code&client_id=' + args.FORGE_CLIENT_ID + '&redirect_uri=' + urllib.quote_plus(args.FORGE_CALLBACK_URL) + '&scope=data:read'
+authorization_url = authorize_url + '?response_type=code&client_id=' + client_id + '&redirect_uri=' + urllib.quote_plus(callback_url) + '&scope=data:read'
 print "Go to the following link in your browser: "
 print authorization_url
 
