@@ -5,6 +5,17 @@ import polling
 import requests
 import sys
 import urllib
+import config.env as env
+from urlparse import urljoin
+
+
+def getRespJson(url, access_token):
+    headers = {'Authorization': 'Bearer ' + access_token}
+    resp = requests.get(url, headers=headers)
+    resp.raise_for_status()
+    if resp.status_code == 200:
+        return resp.json()
+
 
 def downloadCsvFile(download_url, download_filename):
     print 'Downloading CSV file ...'
@@ -13,41 +24,63 @@ def downloadCsvFile(download_url, download_filename):
     if resp.status_code == 200:
         open(download_filename, 'wb').write(resp.content)
 
+
 def getContracts(access_token):
     print 'Getting Contracts ...'
-    get_contract_url = base_tokenflex_api + '/v1/contract'
-    headers = {'Authorization': 'Bearer ' + access_token}
-    resp = requests.get(get_contract_url, headers=headers)
-    resp.raise_for_status()
-    if resp.status_code == 200:
-        return resp.json()
+    return getRespJson(
+        urljoin(
+            env.base_tokenflex_api,
+            'v1/contract'),
+        access_token)
+
 
 def getExportRequestsDetails(access_token, contract_number, request_key):
     print 'Getting Export Request Details ...'
-    export_results_url = base_tokenflex_api + '/v1/export/' + contract_number + '/requests/' + urllib.quote_plus(request_key)
-    headers = {'Authorization': 'Bearer ' + access_token}
-    resp = requests.get(export_results_url, headers=headers)
-    resp.raise_for_status()
-    if resp.status_code == 200:
-        print resp.text
-        return resp.json()
+    return getRespJson(
+        urljoin(
+            env.base_tokenflex_api,
+            'v1/export/' +
+            contract_number +
+            '/requests/' +
+            urllib.quote_plus(request_key)),
+        access_token)
+
 
 def pollExportRequestDetails(access_token, contract_number, request_key):
     print 'Polling Export Request Details ...'
-    export_results_url = base_tokenflex_api + '/v1/export/' + contract_number + '/requests/' + urllib.quote_plus(request_key)
+    export_results_url = urljoin(
+        env.base_tokenflex_api,
+        'v1/export/' +
+        contract_number +
+        '/requests/' +
+        urllib.quote_plus(request_key))
     headers = {'Authorization': 'Bearer ' + access_token}
     web_handle = polling.poll(
-        lambda: requests.get(export_results_url, headers=headers).json()['requestStatus'] == 'Download',
-        step = 5,
-        timeout = 120
-    )
+        lambda: requests.get(
+            export_results_url,
+            headers=headers).json(),
+        step=5,
+        check_success=check_success,
+        timeout=1200)
     return web_handle
 
-# POST /export/:contract_number/requests
+
+def check_success(response):
+    if response['requestStatus'] == 'Error':
+        raise Exception('Download request failed!')
+    print 'Response Status: ' + response['requestStatus']
+    return 'downloadUrl' in response
+
+
 def submitExportRequest(access_token, contract_number):
     print 'Submitting export for contract: ' + contract_number
-    export_request_url = base_tokenflex_api + '/v1/export/' + contract_number + '/requests'
-    headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + access_token }
+    export_request_url = urljoin(
+        env.base_tokenflex_api,
+        'v1/export/' +
+        contract_number +
+        '/requests')
+    headers = {'Content-Type': 'application/json',
+               'Authorization': 'Bearer ' + access_token}
     payload = {
         "fields": [
             "contractYear",
@@ -67,65 +100,45 @@ def submitExportRequest(access_token, contract_number):
         "where": "contractYear=1",
         "downloadFileName": contract_number + "_myYear1DesktopCloudUsage.csv"
     }
-    resp = requests.post(export_request_url, headers=headers, data=json.dumps(payload))
+    resp = requests.post(
+        export_request_url,
+        headers=headers,
+        data=json.dumps(payload))
     resp.raise_for_status()
     if resp.status_code == 200:
         return resp.json()
 
-parser = argparse.ArgumentParser(description='Run consumption report.')
-parser.add_argument('--FORGE_CLIENT_ID', required=False)
-parser.add_argument('--FORGE_CALLBACK_URL', required=False)
-args = parser.parse_args()
 
-base_url = 'https://developer.api.autodesk.com'
-base_tokenflex_api = 'https://developer.api.autodesk.com/tokenflex'
-authorize_url = base_url + '/authentication/v1/authorize'
-
-client_id = os.environ['FORGE_CLIENT_ID'] if args.FORGE_CLIENT_ID is None else args.FORGE_CLIENT_ID
-callback_url = os.environ['FORGE_CALLBACK_URL'] if args.FORGE_CALLBACK_URL is None else args.FORGE_CALLBACK_URL 
-
-if client_id is not None and callback_url is not None:
-    # Step 1: Direct the user to the authorization web flow
-    # Since this is a CLI script we do not redirect. In a web application, you would
-    # redirect the user to the authentication URL below.
-    authorization_url = authorize_url + '?response_type=code&client_id=' + client_id + '&redirect_uri=' + urllib.quote_plus(callback_url) + '&scope=data:read'
-    print "Go to the following link in your browser: "
-    print authorization_url
-
-    # Step 2: After the user has granted access to you, an access token has been issued
-    accepted = 'n'
-    while accepted.lower() == 'n':
-        accepted = raw_input('Have you authorized me? (y/n) ')
-        if accepted == 'n':
-            sys.exit()
-        elif accepted == 'y':
-            print 'Access granted!'
-            access_token = raw_input('Please enter access token value here: ')
-            if access_token != '':
-                contracts = getContracts(access_token)
-                # Step 3: Submit an Export request
-                for contract in contracts:
-                    print '*** Found contract: ' + contract['contractNumber']
-                    contract_number = contract['contractNumber']
-                    export_request = submitExportRequest(access_token, contract_number)
-                    # Step 4: Poll for request results
-                    request_key = export_request['requestKey']
-                    print '*** Submitted export request: ' + request_key
-                    request_details = getExportRequestsDetails(access_token, contract_number, request_key)
-                    if request_details == 'Download':
-                        request_status = request_details['requestStatus']
-                        print '*** Retrieved export status: ' + request_status
-                    else:
-                        poll_status = pollExportRequestDetails(access_token, contract_number, request_key)
-                        if poll_status == True:
-                            request_details = getExportRequestsDetails(access_token, contract_number, request_key)
-                            request_status = request_details['requestStatus']
-                            print '*** Retrieved export status: ' + request_status
-                            download_url = request_details['downloadUrl']
-                            print '*** Download url: ' + download_url
-                            download_filename = request_details['downloadFileName']
-                            downloadCsvFile(download_url, download_filename)
-                            print '*** Downloaded file: ' + download_filename
-else: 
-    print "Exiting script since Forge client ID and callback url were not provided."
-    sys.exit()
+def start(access_token):
+    if access_token:  # consider using regex to validate the token
+        contracts = getContracts(access_token)
+        # Submit an Export request
+        for contract in contracts:
+            print '*** Found contract: ' + contract['contractNumber']
+            contract_number = contract['contractNumber']
+            export_request = submitExportRequest(access_token, contract_number)
+            # Poll for request results
+            request_key = export_request['requestKey']
+            print '*** Submitted export request: ' + request_key
+            request_details = getExportRequestsDetails(
+                access_token, contract_number, request_key)
+            if request_details == 'Download':
+                request_status = request_details['requestStatus']
+                print '*** Retrieved export status: ' + request_status
+            else:
+                poll_status = pollExportRequestDetails(
+                    access_token, contract_number, request_key)
+                if poll_status:
+                    request_details = getExportRequestsDetails(
+                        access_token, contract_number, request_key)
+                    request_status = request_details['requestStatus']
+                    print '*** Retrieved export status: ' + request_status
+                else:
+                    raise Exception('Error occurred!')
+            download_url = request_details['downloadUrl']
+            print '*** Download url: ' + download_url
+            download_filename = request_details['downloadFileName']
+            downloadCsvFile(download_url, download_filename)
+            print '*** Downloaded file: ' + download_filename
+    else:
+        print 'Invalid access_token. Exiting!'
