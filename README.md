@@ -13,11 +13,11 @@ A Forge Python script used to download Autodesk consumption data. The scripts ar
 
 ### Thumbnail
 
-![Screenshot](./thumbnail.png)
+![Screenshot](./Bulk-export-CSV.gif)
 
 ### Live Version
 
-See [video demonstration](https://www.youtube.com/watch?v=746hxnvlQ1g)
+See [video demonstration](https://www.youtube.com/watch?v=jXEAHenxZVE)
 
 ## Setup
 
