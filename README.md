@@ -9,7 +9,7 @@
 
 ## Description
 
-A Forge Python script used to download Autodesk consumption data. The scripts are designed to communicate with Autodesk and  the Forge Consumption Reporting API.
+A Forge Python script used to download Autodesk TokenFlex usage data. The scripts are designed to communicate with Autodesk and the Forge TokenFlex Reporting API.
 
 ### Thumbnail
 
