@@ -60,7 +60,7 @@ class ThreadingHTTPServer(
 
 def startHttpServer():
     global httpd
-    PORT = 4000
+    PORT = 3000
     httpd = ThreadingHTTPServer(
         ("", PORT), ForgeCallbackHTTPRequestHandler)
     print "serving at port", PORT

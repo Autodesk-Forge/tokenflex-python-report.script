@@ -13,7 +13,7 @@ A Forge Python script used to download Autodesk consumption data. The scripts ar
 
 ### Thumbnail
 
-![Screenshot](https://github.com/mazerab/forge-consumption-reporting-sample/blob/master/docs/Python%20Script.png)
+![Screenshot](./thumbnail.png)
 
 ### Live Version
 
@@ -21,7 +21,7 @@ See [video demonstration](https://www.youtube.com/watch?v=746hxnvlQ1g)
 
 ## Setup
 
-Clone this project or download it. It's recommended to install [GitHub desktop](https://desktop.github.com). To clone it via command line, use the following (Terminal on MacOSX/Linux, Git Shell on Windows):
+Clone/download this project. We recommended to use [GitHub desktop](https://desktop.github.com). To clone via command line, run the following on Terminal for Mac/Linux or Git Shell for Windows:
 
 ```bash
 git clone https://github.com/mazerab/forge-consumption-reporting-sample
@@ -29,7 +29,7 @@ git clone https://github.com/mazerab/forge-consumption-reporting-sample
 
 Make sure to have [Python 2.7](https://www.python.org/downloads/release/python-278/) installed.
 
-*Optional: Set up and use [virtualenv](https://virtualenv.pypa.io/en/stable/) to test this sample under isolated dependency environment*
+*Optional: Set up and use [virtualenv](https://virtualenv.pypa.io/en/stable/) to run this sample under isolated dependency environment*
 
 Install dependencies via [pip](https://pip.pypa.io/en/stable/installing/):
 
@@ -58,6 +58,8 @@ Other Platforms:
 python2.7 start.py --FORGE_CLIENT_ID=YOUR_FORGE_CLIENT_ID --FORGE_CLIENT_SECRET=YOUR_FORGE_CLIENT_SECRET --FORGE_CALLBACK_URL=YOUR_FORGE_CALLBACK_URL
 ```
 
+If the above runs fine it will start a SimpleHttpServer as your local server and navigate to Autodesk Sign-in in your primary browser. Follow the prompts in the browser to log into your Autodesk account and your local server will receive a callback with an Authorization Token and proceed to download the CSV reports. See Python console output for details.
+
 ### Debug Options
 
 Optional environment variables (leave empty for default values):
@@ -78,6 +80,10 @@ Since we are dealing with Python scripts, there is no deployment needed, simply 
 If running into errors while running the script, on the terminal shell, use the following to confirm the version of Python:
 
     python --version
+
+Or specify Python version explicitly:
+
+    python2.7 start.py --FORGE_CLIENT_ID=YOUR_FORGE_CLIENT_ID --FORGE_CLIENT_SECRET=YOUR_FORGE_CLIENT_SECRET --FORGE_CALLBACK_URL=YOUR_FORGE_CALLBACK_URL
 
 ### License
 

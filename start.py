@@ -29,7 +29,7 @@ def start():
         print "Can not import webbrowser"
     print "Go to the following link in your browser if the redirection hasn't started: "
     print authorization_url
-    SimpleHTTPServer.startHttpServer(True)
+    SimpleHTTPServer.startHttpServer()
 
 
 if __name__ == "__main__":
