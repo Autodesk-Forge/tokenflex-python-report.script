@@ -1,4 +1,4 @@
-# forge-consumption-reporting-sample
+# tokenflex-reporting-python-script
 
 [![Build Status](https://travis-ci.org/dukedhx/tokenflex-reporting-python-script.svg?branch=master)](https://travis-ci.org/dukedhx/tokenflex-reporting-python-script)
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://opensource.org/licenses/MIT)
