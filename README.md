@@ -13,7 +13,7 @@ A Forge Python script used to download Autodesk TokenFlex usage data. The script
 
 ### Thumbnail
 
-![Screenshot](./Bulk-export-CSV.gif)
+<img src="./thumbnail.gif" width="80%" />
 
 ### Live Version
 
@@ -65,9 +65,8 @@ If the above runs fine it will start a SimpleHttpServer as your local server and
 Optional environment variables (leave empty for default values):
 
 - FORGE_TOKEN_URL
-- FORGE_BASE_URL
 - FORGE_TOKENFLEX_URL
-- FORGE_AUTH_PATH
+- FORGE_AUTH_URL
 
 ### Deployment
 
