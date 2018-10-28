@@ -21,7 +21,7 @@ class ForgeCallbackHTTPRequestHandler(
         global httpd
         bits = urlparse.urlparse(self.path)
         if bits.path == urlparse.urlparse(state.args.FORGE_CALLBACK_URL).path:
-            state.code = bits.query.replace("code=", "")
+            state.code = urlparse.parse_qs(bits.query)['code']
             data = {
                 'client_id': os.getenv(
                     'FORGE_CLIENT_ID',
@@ -46,10 +46,15 @@ class ForgeCallbackHTTPRequestHandler(
                 try:
                     ConsumptionReporting.start(state.token)
                     self.send_response(200)
-                except BaseException:
-                    print BaseException
+                except Exception as e:
+                    print(e)
                     self.send_response(500)
-                httpd.shutdown()
+            else:
+                print resp.json()
+                self.send_response(500)
+            httpd.shutdown()
+        else:
+            self.send_response(404)
 
 
 class ThreadingHTTPServer(
