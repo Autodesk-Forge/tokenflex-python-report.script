@@ -95,7 +95,8 @@ def submitExportRequest(access_token, contract_number):
         ],
         "usageCategory": [
             "DESKTOP_PRODUCT",
-            "CLOUD_PRODUCT"
+            "CLOUD_PRODUCT",
+            "CLOUD_SERVICE"
         ],
         "where": "contractYear=1",
         "downloadFileName": contract_number + "_myYear1DesktopCloudUsage.csv"
