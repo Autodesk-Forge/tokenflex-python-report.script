@@ -14,7 +14,7 @@ A Forge Python script used to download Autodesk TokenFlex usage data. The script
 
 ### Thumbnail
 
-<img src="./thumbnail.gif" width="80%" />
+![Thumbnail](./thumbnail.gif)
 
 ### Live Version
 
