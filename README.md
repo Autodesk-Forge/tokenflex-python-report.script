@@ -6,7 +6,7 @@
 [![tls1.2](https://img.shields.io/badge/TLS-1.2-green.svg)](https://www.ietf.org/rfc/rfc5246.txt)
 [![codebeat badge](https://codebeat.co/badges/d9440870-9122-460b-8b9a-3d1b29d46ed2)](https://codebeat.co/projects/github-com-dukedhx-tokenflex-reporting-python-script-master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4f6821a3553efcc2167d/maintainability)](https://codeclimate.com/github/dukedhx/tokenflex-reporting-python-script/maintainability)
-[![Stackoverflow](https://img.shields.io/badge/ask-stackoverflow-yellow.svg)](https://stackoverflow.com/questions/ask?tags=%5bautodesk-forge,forge-tokenflex)
+[![Stackoverflow](https://img.shields.io/badge/ask-stackoverflow-yellow.svg)](https://stackoverflow.com/questions/ask?tags=%5bautodesk-forge)
 
 ## Description
 
@@ -25,7 +25,7 @@ See [video demonstration](https://www.youtube.com/watch?v=jXEAHenxZVE)
 Clone/download this project. We recommended to use [GitHub desktop](https://desktop.github.com). To clone via command line, run the following on Terminal for Mac/Linux or Git Shell for Windows:
 
 ```bash
-git clone https://github.com/mazerab/forge-consumption-reporting-sample
+git clone https://github.com/Autodesk-Forge/tokenflex-reporting-python-script
 ```
 
 Make sure to have [Python 2.7](https://www.python.org/downloads/release/python-278/) installed.
