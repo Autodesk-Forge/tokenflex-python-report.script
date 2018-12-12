@@ -16,7 +16,7 @@ A Forge Python script used to download Autodesk TokenFlex usage data. The script
 
 ![Thumbnail](./thumbnail.gif)
 
-### Live Version
+### Demonstration
 
 See [video demonstration](https://www.youtube.com/watch?v=jXEAHenxZVE)
 
@@ -25,7 +25,7 @@ See [video demonstration](https://www.youtube.com/watch?v=jXEAHenxZVE)
 Clone/download this project. We recommended to use [GitHub desktop](https://desktop.github.com). To clone via command line, run the following on Terminal for Mac/Linux or Git Shell for Windows:
 
 ```bash
-git clone https://github.com/Autodesk-Forge/tokenflex-reporting-python-script
+git clone https://github.com/Autodesk-Forge/tokenflex-python-report.script
 ```
 
 Make sure to have [Python 2.7](https://www.python.org/downloads/release/python-278/) installed.
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 ### Pre-requisites
 
-For using this sample, you need an Autodesk developer credentials. Visit the [Forge Developer Portal](https://developer.autodesk.com), sign up for an account, then [create an app](https://developer.autodesk.com/myapps/create) with access to **Token Flex Usage Data API**. For this new app, use `http://localhost:3000/any/path/takes/your/fancy` as Callback URL. Finally take note of the **Client ID** and **Client Secret**. For localhost testing:
+For using this sample, you need an Autodesk developer credentials. Visit the [Forge Developer Portal](https://developer.autodesk.com), sign up for an account, then [create an app](https://developer.autodesk.com/myapps/create) with access to **Token Flex Usage Data API**. For this new app, use `http://localhost:3000/api/forge/callback/oauth` as Callback URL. Finally take note of the **Client ID** and **Client Secret**. For localhost testing:
 
 - FORGE\_CLIENT\_ID
 - FORGE\_CLIENT\_SECRET
