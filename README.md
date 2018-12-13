@@ -46,6 +46,8 @@ For using this sample, you need an Autodesk developer credentials. Visit the [Fo
 - FORGE\_CLIENT\_SECRET
 - FORGE\_CALLBACK\_URL
 
+When running the script, you must login with the Autodesk ID of a contract manager or software coordinator to gain access to the contracts' usage data. If you login with a user that does not have such roles, the API will return no data. 
+
 ### Running Locally
 
 Linux/Unix:
