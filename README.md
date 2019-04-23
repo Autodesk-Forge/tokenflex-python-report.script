@@ -46,6 +46,8 @@ For using this sample, you need an Autodesk developer credentials. Visit the [Fo
 - FORGE\_CLIENT\_SECRET
 - FORGE\_CALLBACK\_URL
 
+In order to access TokenFlex API, your contract manager needs to login in the accounts portal and assign the Forge subscription to the Forge account user. Before he can assign the subscription he will need to unassign the subscription from his user account. Contact your account manager for assistance.
+
 When running the script, you must login with the Autodesk ID of a contract manager or software coordinator to gain access to the contracts' usage data. If you login with a user that does not have such roles, the API will return no data. 
 
 ### Running Locally
